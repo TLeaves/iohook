@@ -706,21 +706,8 @@ UIOHOOK_API int hook_run() {
 	keyboard_event_hhook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboard_hook_event_proc, hInst, 0);
 	mouse_event_hhook = SetWindowsHookEx(WH_MOUSE_LL, mouse_hook_event_proc, hInst, 0);
 
-	// Create a window event hook to listen for capture change.
-	win_event_hhook = SetWinEventHook(
-			EVENT_OBJECT_NAMECHANGE, EVENT_OBJECT_NAMECHANGE, 
-			NULL, 
-			win_hook_event_proc, 
-			0, 0, 
-			WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS);
-
 	// If we did not encounter a problem, start processing events.
 	if (keyboard_event_hhook != NULL && mouse_event_hhook != NULL) {
-		if (win_event_hhook == NULL) {
-			logger(LOG_LEVEL_WARN,	"%s [%u]: SetWinEventHook() failed!\n",
-					__FUNCTION__, __LINE__);
-		}
-
 		logger(LOG_LEVEL_DEBUG,	"%s [%u]: SetWindowsHookEx() successful.\n",
 				__FUNCTION__, __LINE__);
 
